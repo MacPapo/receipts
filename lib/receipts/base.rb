@@ -8,7 +8,7 @@ module Receipts
 
     def initialize(attributes = {})
       super(page_size: attributes.delete(:page_size) || "LETTER")
-      setup_fonts attributes.fetch(:font, Receipts.default_font)
+      setup_fonts(attributes.fetch(:font, Receipts.default_font), attributes.delete(:font_size))
 
       @title = attributes.fetch(:title, self.class.title)
 
@@ -29,13 +29,13 @@ module Receipts
       render_footer attributes.fetch(:footer, default_message(company: company))
     end
 
-    def setup_fonts(custom_font = nil)
+    def setup_fonts(custom_font = nil, size: 10)
       if !!custom_font
         font_families.update "Primary" => custom_font
         font "Primary"
       end
 
-      font_size 8
+      font_size size
     end
 
     def load_image(logo)
